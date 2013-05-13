@@ -13,4 +13,16 @@ public class Variable implements Expression {
     public double evaluate(Map<String, Double> map) {
         return map.get(name);
     }
+    
+    public String toString(int a){
+        return name;
+    }
+    
+    public String toString(){
+        return name;
+    }
+
+    public Expression simplify() {
+        return this;
+    }
 }

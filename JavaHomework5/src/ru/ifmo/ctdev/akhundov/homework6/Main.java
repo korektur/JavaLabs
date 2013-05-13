@@ -9,7 +9,8 @@ public class Main {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         Map<String, Double> map = new TreeMap<String, Double>();
         String expr = in.readLine();
-        Expression x = Parser.parse(expr);
+        Parser p = new Parser();
+        Expression x = p.parse(expr);
         while (true) {
             String[] parsed = in.readLine().split(" ");
             if (parsed.length < 3) {
@@ -18,6 +19,8 @@ public class Main {
             double y = Double.parseDouble(parsed[2]);
             map.put(parsed[0], y);
         }
+        System.out.println(x.simplify().toString() + " = ");
         System.out.println(x.evaluate(map));
     }
 }
+    

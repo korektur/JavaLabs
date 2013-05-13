@@ -2,7 +2,18 @@ package ru.ifmo.ctdev.akhundov.homework6;
 
 public class Parser {
 
-    private static Token PlusMinus(String s) {
+    private class Token {
+
+        Expression acc;
+        String rest;
+
+        public Token(Expression acc, String rest) {
+            this.acc = acc;
+            this.rest = rest;
+        }
+    }
+
+    private Token plusMinus(String s) {
         Token current = mulDiv(s);
         Expression acc = current.acc;
 
@@ -24,10 +35,10 @@ public class Parser {
         return new Token(acc, current.rest);
     }
 
-    private static Token Bracket(String s) {
+    private Token bracket(String s) {
         char zeroChar = s.charAt(0);
         if (zeroChar == '(') {
-            Token r = PlusMinus(s.substring(1));
+            Token r = plusMinus(s.substring(1));
             if (!r.rest.isEmpty() && r.rest.charAt(0) == ')') {
                 r.rest = r.rest.substring(1);
             }
@@ -36,8 +47,8 @@ public class Parser {
         return num(s);
     }
 
-    private static Token mulDiv(String s) {
-        Token current = Bracket(s);
+    private Token mulDiv(String s) {
+        Token current = bracket(s);
         Expression acc = current.acc;
         while (true) {
             if (current.rest.length() == 0) {
@@ -49,7 +60,7 @@ public class Parser {
             }
 
             String next = current.rest.substring(1);
-            Token right = Bracket(next);
+            Token right = bracket(next);
 
             if (sign == '*') {
                 acc = new Times(acc, right.acc);
@@ -63,7 +74,7 @@ public class Parser {
         }
     }
 
-    private static Token num(String s) {
+    private Token num(String s) {
         int i = 0;
         boolean negative = false;
         if (s.charAt(0) == '-') {
@@ -95,7 +106,7 @@ public class Parser {
         }
     }
 
-    public static Expression parse(String s) {
-        return PlusMinus(s.replace(" ", "")).acc;
+    public Expression parse(String s) {
+        return plusMinus(s.replace(" ", "")).acc;
     }
 }

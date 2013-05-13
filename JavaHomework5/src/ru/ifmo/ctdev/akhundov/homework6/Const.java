@@ -11,6 +11,18 @@ public class Const implements Expression {
     }
 
     public double evaluate(Map<String, Double> map) {
-        return this.value;
+        return value;
+    }
+
+    public String toString(int a) {
+        return String.valueOf(value);
+    }
+    
+    public String toString(){
+        return String.valueOf(value);
+    }
+
+    public Expression simplify() {
+        return this;
     }
 }

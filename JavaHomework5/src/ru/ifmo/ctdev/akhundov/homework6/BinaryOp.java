@@ -4,7 +4,7 @@ import java.util.Map;
 
 public abstract class BinaryOp implements Expression {
 
-    private Expression left, right;
+    protected Expression left, right;
 
     public BinaryOp(Expression left, Expression right) {
         this.left = left;
@@ -14,6 +14,21 @@ public abstract class BinaryOp implements Expression {
     public double evaluate(Map<String, Double> map) {
         return apply(left.evaluate(map), right.evaluate(map));
     }
+    
+    public Expression simplify() {
+        left = left.simplify();
+        right = right.simplify();
+        if (left instanceof Const && right instanceof Const) {
+            return new Const(this.evaluate(null));
+        }
+        return deepSimplify();
+    }
 
-    public abstract double apply(double x, double y);
+    protected abstract double apply(double x, double y);
+
+    public String toString() {
+        return this.toString(0);
+    }
+
+    protected abstract Expression deepSimplify();
 }
